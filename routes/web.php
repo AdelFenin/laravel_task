@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,7 +26,7 @@ Route::get('/registration', function () {
 })->name('registration');
 Route::post('/registration', [AuthController::class, 'registration']);
 
-Route::group(['middleware' => 'auth', 'verified'], function () {
+Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/user', function () {
         return view('user');
     })->name('user');
@@ -35,3 +36,11 @@ Route::get('/email/verify/success', function () {
     return view('verify_success');
 })->name('verify_success');
 Route::get('/email/verify/{id}/{hash}', [EmailController::class, 'verify'])->name('verification.verify');
+Route::get('/not_verified', [EmailController::class, 'notVerified'])->name('verification.notice');
+
+Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'user'], function () {
+    Route::group(['prefix' => 'my'], function () {
+        Route::patch('/', [UserController::class, 'MyInfoEdit']);
+        Route::patch('/password', [UserController::class, 'MyPasswordEdit']);
+    });
+});

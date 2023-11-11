@@ -50,6 +50,6 @@ class AuthController extends Controller
 
         $user = User::where('email', $credentials['email'])->first();
         Auth::login($user);
-        return view('user');
+        return redirect('/user');
     }
 }

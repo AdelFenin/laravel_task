@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 
 class EmailController extends Controller
@@ -35,5 +36,12 @@ class EmailController extends Controller
         }
 
         return redirect('/email/verify/success');
+    }
+    
+    public function notVerified()
+    {
+        $user = auth()->user();
+        Auth::login($user);
+        return redirect('/')->with('message', 'You not verified!');
     }
 }
