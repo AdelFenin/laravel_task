@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EmailController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,8 +25,13 @@ Route::get('/registration', function () {
 })->name('registration');
 Route::post('/registration', [AuthController::class, 'registration']);
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth', 'verified'], function () {
     Route::get('/user', function () {
         return view('user');
     })->name('user');
 });
+
+Route::get('/email/verify/success', function () {
+    return view('verify_success');
+})->name('verify_success');
+Route::get('/email/verify/{id}/{hash}', [EmailController::class, 'verify'])->name('verification.verify');

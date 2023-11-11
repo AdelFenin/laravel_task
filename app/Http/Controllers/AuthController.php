@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -23,9 +25,11 @@ class AuthController extends Controller
 
         $validated = $validator->validated();
 
-        User::create($validated);
+        $user = User::create($validated);
 
-        return redirect('/')->with('message', 'State saved correctly!');
+        Event::dispatch(new Registered($user));
+
+        return redirect('/')->with('message', 'Verification message send on your email!');
     }
     public function login(Request $request)
     {

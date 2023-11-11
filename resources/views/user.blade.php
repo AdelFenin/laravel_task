@@ -1,6 +1,7 @@
 <div>USER</div>
-@if(Auth::check())
-<div>LOGGED</div>
+<div>{{ Auth::user()->email }}</div>
+@if(Auth::user()->verified)
+<div>Verified</div> 
 @else
-<div>FAIL</div>
+<div>Not Verified</div>
 @endif

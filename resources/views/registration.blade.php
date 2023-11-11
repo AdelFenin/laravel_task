@@ -1,4 +1,7 @@
 <h2>Register</h2>
+<div>
+    <button style="cursor:pointer" type="button" onclick="window.location='{{ route("login") }}'">Login</button>
+</div>
 <div class="alert alert-danger">
     <ul>
         @foreach ($errors->all() as $error)

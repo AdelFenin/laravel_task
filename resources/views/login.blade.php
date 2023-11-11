@@ -1,4 +1,16 @@
 <h2>Login</h2>
+<div>
+    <button style="cursor:pointer" type="button" onclick="window.location='{{ route("registration") }}'">Registration</button>
+</div>
+
+@if( Session::has('message') )
+<div>
+    <ul>
+        <li>{{ Session::get('message') }}</li>
+    </ul>
+</div>
+@endif
+
 <div class="alert alert-danger">
     <ul>
         @foreach ($errors->all() as $error)
