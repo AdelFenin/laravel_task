@@ -15,7 +15,7 @@ class AuthController extends Controller
     public function registration(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|min:5|max:200',
+            'name' => 'required|string|min:3|max:200',
             'email' => 'required|email|string|min:5|max:255|unique:users,email',
             'password' => 'required|string|min:6|max:200|confirmed'
         ]);
@@ -60,5 +60,10 @@ class AuthController extends Controller
         $user = User::where('email', $credentials['email'])->first();
         Auth::login($user);
         return redirect('/user');
+    }
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('/');
     }
 }

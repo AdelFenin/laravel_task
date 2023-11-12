@@ -40,8 +40,7 @@ class EmailController extends Controller
 
     public function notVerified()
     {
-        $user = auth()->user();
-        Auth::login($user);
+        Auth::logout();
         return redirect('/')->with('message', 'You not verified!');
     }
 }

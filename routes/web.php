@@ -20,13 +20,17 @@ Route::get('/', function () {
     return view('login');
 })->name('login');
 Route::post('/', [AuthController::class, 'login']);
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/registration', function () {
     return view('registration');
 })->name('registration');
 Route::post('/registration', [AuthController::class, 'registration']);
 
-Route::group(['middleware' => ['auth', 'verified']], function () {
+Route::group(['middleware' => [
+    'auth',
+    // 'verified'
+]], function () {
     Route::get('/user', function () {
         return view('user');
     })->name('user');
@@ -39,8 +43,8 @@ Route::get('/email/verify/{id}/{hash}', [EmailController::class, 'verify'])->nam
 Route::get('/not_verified', [EmailController::class, 'notVerified'])->name('verification.notice');
 
 Route::group(['middleware' => [
-    'auth', 
-    'verified'
+    'auth',
+    // 'verified'
 ], 'prefix' => 'user'], function () {
     Route::group(['prefix' => 'my'], function () {
         Route::patch('/', [UserController::class, 'MyInfoEdit']);
