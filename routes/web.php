@@ -38,7 +38,10 @@ Route::get('/email/verify/success', function () {
 Route::get('/email/verify/{id}/{hash}', [EmailController::class, 'verify'])->name('verification.verify');
 Route::get('/not_verified', [EmailController::class, 'notVerified'])->name('verification.notice');
 
-Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'user'], function () {
+Route::group(['middleware' => [
+    'auth', 
+    'verified'
+], 'prefix' => 'user'], function () {
     Route::group(['prefix' => 'my'], function () {
         Route::patch('/', [UserController::class, 'MyInfoEdit']);
         Route::patch('/password', [UserController::class, 'MyPasswordEdit']);

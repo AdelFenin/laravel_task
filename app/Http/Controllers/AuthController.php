@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Error;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,16 +21,24 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return back()->withErrors($validator->errors()->first());
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors($validator->errors()->first());
         }
 
         $validated = $validator->validated();
 
         $user = User::create($validated);
 
-        Event::dispatch(new Registered($user));
+        $message = 'You registered! Verification message send on your email!';
+        try {
+            dispatch(new Registered($user));
+        } catch (Error $e) {
+            $message = "You registered! ( Error: " . $e->getMessage() . " )";
+        } 
 
-        return redirect('/')->with('message', 'Verification message send on your email!');
+        return redirect('/')->with('message', $message);
     }
     public function login(Request $request)
     {
@@ -45,7 +54,7 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
 
         if (!Auth::attempt($credentials)) {
-            return back()->withErrors("Wrong credentials");
+            return back()->withInput()->withErrors("Wrong credentials");
         }
 
         $user = User::where('email', $credentials['email'])->first();

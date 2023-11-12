@@ -22,12 +22,12 @@
     {{ csrf_field() }}
     <div class="form-group">
         <label for="email">Email:</label>
-        <input class="form-control" id="email" name="email">
+        <input class="form-control" id="email" name="email" value="{{ old('email') }}">
     </div>
 
     <div class="form-group">
         <label for="password">Password:</label>
-        <input type="password" class="form-control" id="password" name="password">
+        <input type="password" class="form-control" id="password" name="password" value="{{ old('password') }}">
     </div>
 
     <div class="form-group">

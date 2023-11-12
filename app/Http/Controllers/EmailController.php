@@ -37,7 +37,7 @@ class EmailController extends Controller
 
         return redirect('/email/verify/success');
     }
-    
+
     public function notVerified()
     {
         $user = auth()->user();
